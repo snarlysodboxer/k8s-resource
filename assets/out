@@ -94,6 +94,20 @@ cd $source_dir
   --filename $spec_path \
   $record"
 
+# if $(cat $spec_path | yq -e ".kind == \"Deployment\""); then # consider installing yq
+if $(cat $spec_path | grep "kind" | grep "Deployment"); then
+  /bin/sh -c "kubectl rollout status \
+    --server $url \
+    $username \
+    $password \
+    --namespace $namespace \
+    $insecure_skip_tls_verify \
+    $client_certificate \
+    $client_key \
+    $certificate_authority \
+    --filename $spec_path"
+fi
+
 timestamp=$(date)
 
 jq -n '{
