@@ -82,7 +82,7 @@ fi
 
 cd $source_dir
 
-/bin/sh -c "kubectl apply \
+/bin/sh -ec "kubectl apply \
   --server $url \
   $username \
   $password \
@@ -94,9 +94,8 @@ cd $source_dir
   --filename $spec_path \
   $record"
 
-# if $(cat $spec_path | yq -e ".kind == \"Deployment\""); then # consider installing yq
-if $(cat $spec_path | grep "kind" | grep "Deployment"); then
-  /bin/sh -c "kubectl rollout status \
+if $(cat "$spec_path" | yq -e "(.kind == \"Deployment\")"); then
+  /bin/sh -ec "kubectl rollout status \
     --server $url \
     $username \
     $password \
