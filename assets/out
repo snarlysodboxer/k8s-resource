@@ -57,21 +57,21 @@ fi
 cert_data=$(jq -r '.source.cert_data // ""' < $payload)
 if [ -n "${cert_data}" ]; then
   cert_file=$(mktemp $TMPDIR/k8s-resource-certfile.XXXXXX)
-  echo -e "$cert_data" > $cert_file
+  echo "$cert_data" > $cert_file
   client_certificate="--client-certificate $cert_file"
 fi
 
 key_data=$(jq -r '.source.key_data // ""' < $payload)
 if [ -n "$key_data" ]; then
   key_file=$(mktemp $TMPDIR/k8s-resource-keyfile.XXXXXX)
-  echo -e "$key_data" > $key_file
+  echo "$key_data" > $key_file
   client_key="--client-key $key_file"
 fi
 
 ca_data=$(jq -r '.source.ca_data // ""' < $payload)
 if [ -n "$ca_data" ]; then
   ca_file=$(mktemp $TMPDIR/k8s-resource-cafile.XXXXXX)
-  echo -e "$ca_data" > $ca_file
+  echo "$ca_data" > $ca_file
   certificate_authority="--certificate-authority $ca_file"
 fi
 
